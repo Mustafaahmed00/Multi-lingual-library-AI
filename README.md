@@ -1,6 +1,6 @@
-Healey Library Assistant
-Project in Progress
-Some features are under development and will be implemented soon.
+## Healey Library Assistant
+## Project in Progress
+## Some features are under development and will be implemented soon.
 
 The Healey Library Assistant is a web-based application designed to assist users with language translation. It allows users to input text in any language, translates it to their desired language, and provides both text and voice output for the translated text. This tool is particularly useful for multilingual communication and learning.
 
