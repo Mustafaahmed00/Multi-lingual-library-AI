@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healey Library Assistant</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #chat-box {
+            width: 100%;
+            height: 300px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            overflow-y: scroll;
+            margin-bottom: 10px;
+        }
+        #user-input {
+            width: calc(100% - 90px);
+            padding: 10px;
+            margin-right: 10px;
+        }
+        #send-btn, #voice-btn {
+            padding: 10px 20px;
+        }
+        .language-selector {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Healey Library Assistant</h1>
+    <div class="language-selector">
+        <label for="language-select">Choose Language:</label>
+        <select id="language-select">
+            <option value="en">English</option>
+            <option value="hi">Hindi</option>
+            <option value="zh">Chinese</option>
+            <option value="af">Afrikaans</option>
+            <option value="es">Spanish</option>
+            <!-- Add more languages as needed -->
+        </select>
+    </div>
+    <div id="chat-box"></div>
+    <input type="text" id="user-input" placeholder="Type your question here...">
+    <button id="voice-btn">🎤</button>
+    <button id="send-btn">Send</button>
+
+    <script>
+        const chatBox = document.getElementById('chat-box');
+        const userInput = document.getElementById('user-input');
+        const sendBtn = document.getElementById('send-btn');
+        const voiceBtn = document.getElementById('voice-btn');
+        const languageSelect = document.getElementById('language-select');
+
+        let isListening = false;
+        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.lang = 'en'; // Default language
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+
+        // Function to speak text
+        function speakText(text, lang) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = lang;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        // Function to add message to chat box
+        function addMessageToChatBox(message, isUser) {
+            const messageElement = document.createElement('div');
+            messageElement.textContent = `${isUser ? 'You' : 'Assistant'}: ${message}`;
+            messageElement.style.color = isUser ? 'blue' : 'green';
+            chatBox.appendChild(messageElement);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // Function to send user input to the backend
+        async function sendMessage() {
+            const message = userInput.value.trim();
+            if (message) {
+                addMessageToChatBox(message, true);
+                userInput.value = '';
+
+                try {
+                    const selectedLanguage = languageSelect.value;
+                    const response = await fetch('/get_response', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: `message=${encodeURIComponent(message)}&language=${selectedLanguage}`,
+                    });
+
+                    const data = await response.json();
+                    const answer = data.answer;
+
+                    addMessageToChatBox(answer, false);
+
+                    // Speak the response in the selected language
+                    speakText(answer, selectedLanguage);
+
+                } catch (error) {
+                    console.error('Error:', error);
+                    addMessageToChatBox('Sorry, something went wrong. Please try again.', false);
+                }
+            }
+        }
+
+        // Voice input functionality
+        voiceBtn.addEventListener('click', () => {
+            if (!isListening) {
+                recognition.lang = languageSelect.value; // Set recognition language
+                recognition.start();
+                voiceBtn.textContent = '🛑';
+                isListening = true;
+            } else {
+                recognition.stop();
+                voiceBtn.textContent = '🎤';
+                isListening = false;
+            }
+        });
+
+        recognition.addEventListener('result', (event) => {
+            const transcript = event.results[0][0].transcript;
+            userInput.value = transcript;
+            sendMessage();
+        });
+
+        recognition.addEventListener('end', () => {
+            if (isListening) {
+                recognition.start(); // Restart recognition if still listening
+            }
+        });
+
+        recognition.addEventListener('error', (event) => {
+            console.error('Speech recognition error:', event.error);
+            voiceBtn.textContent = '🎤';
+            isListening = false;
+        });
+
+        // Event listener for send button
+        sendBtn.addEventListener('click', sendMessage);
+
+        // Event listener for Enter key
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>
