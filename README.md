@@ -1,10 +1,13 @@
 Healey Library Assistant
+Project in Progress
+Some features are under development and will be implemented soon.
+
 The Healey Library Assistant is a web-based application designed to assist users with language translation. It allows users to input text in any language, translates it to their desired language, and provides both text and voice output for the translated text. This tool is particularly useful for multilingual communication and learning.
 
 Features
 Language Translation: Translates user input into the desired language using Google Translate API.
 
-Voice Input: Users can speak their input instead of typing.
+Voice Input: Users can speak their input instead of typing (powered by the Web Speech API).
 
 Voice Output: The translated text is spoken aloud in the selected language.
 
@@ -37,8 +40,8 @@ Steps to Run the Application
 Clone the Repository:
 
 
-git clone https://github.com/your-repo/heale-library-assistant.git
-cd heale-library-assistant
+git clone https://github.com/your-repo/healey-library-assistant.git
+cd healey-library-assistant
 Set Up Environment Variables:
 Create a .env file in the root directory and add the following:
 
@@ -56,10 +59,8 @@ Start the Flask development server:
 
 python app.py
 Access the Application:
-Open your browser and navigate to:
+Open your browser and navigate to the url. 
 
-
-http://127.0.0.1:5000/
 How to Use
 Select Language:
 
@@ -89,3 +90,27 @@ Output:
 Translated Text: "नमस्ते, आप कैसे हैं?"
 
 The translated text will be spoken aloud in Hindi.
+
+Troubleshooting
+Voice Input Not Working:
+
+Ensure your browser supports the Web Speech API (e.g., Chrome, Edge).
+
+Allow microphone access when prompted.
+
+Translation Errors:
+
+Check your Google Cloud Translation API credentials in the .env file.
+
+Ensure the Translation API is enabled in your Google Cloud Console.
+
+Speech Synthesis Not Working:
+
+Ensure your browser supports speech synthesis.
+
+Check the console for any errors.
+
+Future Enhancements
+Question-Answer Feature: Add support for answering library-related questions.
+
+Multi-language Support: Expand the list of supported languages.
