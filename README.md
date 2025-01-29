@@ -4,7 +4,7 @@
 
 The Healey Library Assistant is a web-based application designed to assist users with language translation. It allows users to input text in any language, translates it to their desired language, and provides both text and voice output for the translated text. This tool is particularly useful for multilingual communication and learning.
 
-Features
+## Features
 Language Translation: Translates user input into the desired language using Google Translate API.
 
 Voice Input: Users can speak their input instead of typing (powered by the Web Speech API).
@@ -15,7 +15,7 @@ Language Selection: Users can choose their preferred language from a dropdown me
 
 Simple Interface: Easy-to-use chat-like interface for seamless interaction.
 
-Technologies Used
+## Technologies Used
 Frontend: HTML, CSS, JavaScript (Web Speech API for voice input/output)
 
 Backend: Python (Flask framework)
@@ -24,7 +24,7 @@ Translation API: Google Cloud Translation API
 
 Speech Synthesis: Web Speech API (built into modern browsers)
 
-Setup Instructions
+## Setup Instructions
 Prerequisites
 Python 3.x: Ensure Python is installed on your system.
 
@@ -61,7 +61,7 @@ python app.py
 Access the Application:
 Open your browser and navigate to the url. 
 
-How to Use
+## How to Use
 Select Language:
 
 Choose your desired language from the dropdown menu.
@@ -98,7 +98,7 @@ Ensure your browser supports the Web Speech API (e.g., Chrome, Edge).
 
 Allow microphone access when prompted.
 
-Translation Errors:
+## Translation Errors:
 
 Check your Google Cloud Translation API credentials in the .env file.
 
@@ -110,7 +110,7 @@ Ensure your browser supports speech synthesis.
 
 Check the console for any errors.
 
-Future Enhancements
+## Future Enhancements
 Question-Answer Feature: Add support for answering library-related questions.
 
 Multi-language Support: Expand the list of supported languages.
